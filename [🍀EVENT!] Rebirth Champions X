@@ -348,18 +348,22 @@ local Dropdown = AutoFarmTab:CreateDropdown({
 
 
 
-local Toggle = PlayerTab:CreateToggle({
-	Name = "Para Makita mo Halaga ko	",
-	CurrentValue = false,
-	Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-	Callback = function(Value)
-		-- Get the player and change their camera's field of view
-local player = game:GetService("Players").LocalPlayer
-local camera = workspace.CurrentCamera
-camera.FieldOfView = 100 -- Change 70 to whatever value you want the FOV to be
+local fovToggled = false
 
-		-- The function that takes place when the toggle is pressed
-    		-- The variable (Value) is a boolean on whether the toggle is true or false
+-- Set up the toggle button
+local Toggle = PlayerTab:CreateToggle({
+	Name = "Para Makita mo Halaga ko",
+	CurrentValue = false,
+	Flag = "Toggle1",
+	Callback = function(Value)
+		-- Toggle the FOV based on whether the toggle is on or off
+		if Value then
+			fovToggled = true
+			game:GetService("Workspace").CurrentCamera.FieldOfView = 100 -- Change 100 to whatever value you want the FOV to be
+		else
+			fovToggled = false
+			game:GetService("Workspace").CurrentCamera.FieldOfView = 70 -- Change 70 to whatever value you want the default FOV to be
+		end
 	end,
 })
 
@@ -369,18 +373,25 @@ local Label = MiscTab:CreateLabel("Anti Afk is enabled")
 
 -- local player
 
+local walkspeedToggled = false
+
+-- Set up the toggle button
 local Toggle = PlayerTab:CreateToggle({
 	Name = "Snatcher sa quiapo",
 	CurrentValue = false,
-	Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+	Flag = "Toggle1",
 	Callback = function(Value)
-		-- Get the player and set their walkspeed
-local player = game:GetService("Players").LocalPlayer
-player.Character.Humanoid.WalkSpeed = 100 -- Change 16 to whatever value you want the walkspeed to be
-		-- The function that takes place when the toggle is pressed
-    		-- The variable (Value) is a boolean on whether the toggle is true or false
+		-- Toggle the walkspeed based on whether the toggle is on or off
+		if Value then
+			walkspeedToggled = true
+			game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 100 -- Change 100 to whatever value you want the walkspeed to be
+		else
+			walkspeedToggled = false
+			game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 16 -- Change 16 to whatever value you want the default walkspeed to be
+		end
 	end,
 })
+
 
 
 -- anti afk
@@ -404,4 +415,11 @@ Rayfield:Notify({
 			end
 		},
 	},
+})
+
+local Button = MiscTab:CreateButton({
+	Name = "Bye Lods",
+	Callback = function()
+		Rayfield:Destroy()
+	end,
 })
